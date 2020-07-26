@@ -1,4 +1,7 @@
+// Creating Constants & Variables
 const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6jdcGuNVAYt0lSrLdORgjLs6dkvBc/od6/public/basic?alt=json';
+var input_text = '';
+
 
 async function getdata() {
     console.log("Calling API...");
@@ -26,20 +29,20 @@ function get_raw_text() {
 }
 
 function generate_init() {
-    if (test != get_raw_text()) {
+    if (input_text != get_raw_text()) {
         generate();
     }
 }
 
 function generate() {
     var raw_text = get_raw_text();
-    test = '';
+    input_text = '';
     var i = 1;
     for (i = 1; i <= raw_text.length; i++) {
         const element = raw_text[raw_text.length-i];
-        test = test+element;
+        input_text = input_text+element;
     }
-    document.getElementById('upside_down_text').value = test;
+    document.getElementById('upside_down_text').value = input_text;
 }
 
 setInterval(generate_init, 100)

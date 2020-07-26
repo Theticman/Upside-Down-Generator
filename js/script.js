@@ -66,6 +66,9 @@ function search_variables(text) {
 function convert_letter(letter) {
     var lettre = table[0];
     var indice = lettre.indexOf(letter);
+    if (indice == -1) {
+        return letter
+    }
     return table[1][indice];
 }
 

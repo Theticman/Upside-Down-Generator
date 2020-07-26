@@ -1,6 +1,8 @@
 // Creating Constants & Variables
 const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6jdcGuNVAYt0lSrLdORgjLs6dkvBc/od6/public/basic?alt=json';
 var input_text = '';
+var upside_down = '';
+var variables = [];
 console.log("TEST");
 
 // Functions
@@ -32,18 +34,43 @@ function display_ud_text(text) {
 }
 
 function generate_init() {
-    if (input_text != get_input_text()) {
+    new_inputed_text = get_input_text();
+    if (input_text != new_inputed_text) {
+        input_text = new_inputed_text;
         generate();
     }
 }
 
+function search_variables(text) {
+    var again = 0;
+    var var_1 = text.search("%s");
+    if (var_1 != -1) {
+        variables.push([var_1,'%s']);
+        text = text.replace("%s", "  ");
+        again = 1;
+    }
+    var var_2 = text.search(/%\$.s/);
+    console.log("Search",var_2)
+    if (var_2 != -1) {
+        variables.push([var_2,text.substring(var_2,var_2+3)]);
+        text = text.replace(text.substring(var_2,var_2+3), "    ");
+        again = 1;
+    }
+    if (again == 1) {
+        search_variables(text);
+    }
+    return text
+}
+
 function generate() {
-    console.log("Generating new output...");
-    input_text = get_input_text();
-    var upside_down = '';
+    console.log("Start generate...");
+    upside_down = '';
+    variables = [];
+    var no_variables = search_variables(input_text);
+    console.log("FINAL VARIABLES",variables);
     var i = 1;
-    for (i = 1; i <= input_text.length; i++) {
-        const element = input_text[input_text.length-i];
+    for (i = 1; i <= no_variables.length; i++) {
+        const element = no_variables[no_variables.length-i];
         upside_down = upside_down+element;
     }
     display_ud_text(upside_down);

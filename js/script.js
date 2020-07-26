@@ -11,15 +11,14 @@ async function getdata() {
     raw_data = raw_data.feed.entry;
     console.log("Raw data pulled:",raw_data);
     var table = [[],[]];
-    var i = 0;
     console.log("Reformating to usable JSON...");
     raw_data.forEach(element => {
-        if (i % 2 === 0) {
+        if (element.title.$t[0] === 'A') {
             table[0].push(element.content.$t);
-        } else {
+        } 
+        if (element.title.$t[0] === 'B') {
             table[1].push(element.content.$t);
         }
-        i++
     });
     console.log("Final table",table);
 }

@@ -41,7 +41,7 @@ function generate_init() {
         generate();
     }
 }
-/*
+
 function search_variables(text) {
     var again = 0;
     var var_1 = text.search("%s");
@@ -62,7 +62,6 @@ function search_variables(text) {
     }
     return text
 }
-*/
 
 function convert_letter(letter) {
     var lettre = table[0];

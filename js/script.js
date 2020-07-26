@@ -1,6 +1,7 @@
 // Creating Constants & Variables
 const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6jdcGuNVAYt0lSrLdORgjLs6dkvBc/od6/public/basic?alt=json';
 var input_text = '';
+var table = [];
 var upside_down = '';
 var variables = [];
 console.log("TEST");
@@ -12,7 +13,7 @@ async function getdata() {
     var raw_data = await response.json();
     raw_data = raw_data.feed.entry;
     console.log("Raw data pulled:",raw_data);
-    var table = [[],[]];
+    table = [[],[]];
     console.log("Reformating to usable JSON...");
     raw_data.forEach(element => {
         if (element.title.$t[0] === 'A') {
@@ -40,7 +41,7 @@ function generate_init() {
         generate();
     }
 }
-
+/*
 function search_variables(text) {
     var again = 0;
     var var_1 = text.search("%s");
@@ -61,17 +62,24 @@ function search_variables(text) {
     }
     return text
 }
+*/
+
+function convert_letter(letter) {
+    var lettre = table[0];
+    var indice = lettre.indexOf(letter);
+    return table[1][indice];
+}
 
 function generate() {
     console.log("Start generate...");
     upside_down = '';
     variables = [];
-    var no_variables = search_variables(input_text);
+    //var no_variables = search_variables(input_text);
+    var no_variables = input_text;
     console.log("FINAL VARIABLES",variables);
-    var i = 1;
-    for (i = 1; i <= no_variables.length; i++) {
+    for (let i = 1; i <= no_variables.length; i++) {
         const element = no_variables[no_variables.length-i];
-        upside_down = upside_down+element;
+        upside_down = upside_down+convert_letter(String(element));
     }
     display_ud_text(upside_down);
 }

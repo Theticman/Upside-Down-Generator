@@ -3,7 +3,6 @@ const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6j
 var input_text = '';
 var table = [];
 var upside_down = '';
-var variables = [];
 console.log("TEST");
 
 // Functions
@@ -34,31 +33,38 @@ function display_ud_text(text) {
     document.getElementById('upside_down_text').value = text;
 }
 
-function generate_init() {
-    new_inputed_text = get_input_text();
-    if (input_text != new_inputed_text) {
-        input_text = new_inputed_text;
-        generate();
+function search_variables(text) {
+    var variables = [];
+    var var_1 = text.search('%s');
+    var var_2 = text.search(/%\$.s/);
+    
+    while (var_1 != -1) {
+        if (variables.length >= 1) {
+            variables.push([var_1,'%$'+(variables.length+1)+'s']);
+            variables[0][1] = '%$1s';
+        }
+        else {
+            variables.push([var_1,'%s']);
+        }
+        text = text.replace("%s", "");
+        var_1 = text.search('%s')
     }
+
+    while (var_2 != -1) {
+        variables.push([text.search(/%\$.s/),text.substring(var_2,var_2+4)]);
+        text = text.replace(text.substring(var_2,var_2+4), "");
+        var_2 = text.search(/%\$.s/);
+    }
+    return [text,variables.reverse()]
 }
 
-function search_variables(text) {
-    var again = 0;
-    var var_1 = text.search("%s");
-    if (var_1 != -1) {
-        variables.push([var_1,'%s']);
-        text = text.replace("%s", "  ");
-        again = 1;
-    }
-    var var_2 = text.search(/%\$.s/);
-    console.log("Search",var_2)
-    if (var_2 != -1) {
-        variables.push([var_2,text.substring(var_2,var_2+3)]);
-        text = text.replace(text.substring(var_2,var_2+3), "    ");
-        again = 1;
-    }
-    if (again == 1) {
-        search_variables(text);
+function place_variables(text,variables) {
+    console.log("Place variables");
+    for (let i = 0; i < text.length; i++) {
+        console.log(variables[0][0],i);
+        if (variables[0][0] == i) {
+            text = text.slice(0,text.length-i) + variables[0][1] + text.slice(text.lenght-i,text.lenght);
+        }
     }
     return text
 }
@@ -72,18 +78,33 @@ function convert_letter(letter) {
     return table[1][indice];
 }
 
+function convert_text(text) {
+    var new_text = '';
+    for (let i = 1; i <= text.length; i++) {
+        const element = text[text.length-i];
+        new_text = new_text+convert_letter(String(element));
+    }
+    return new_text
+}
+
 function generate() {
     console.log("Start generate...");
     upside_down = '';
-    variables = [];
-    //var no_variables = search_variables(input_text);
-    var no_variables = input_text;
-    console.log("FINAL VARIABLES",variables);
-    for (let i = 1; i <= no_variables.length; i++) {
-        const element = no_variables[no_variables.length-i];
-        upside_down = upside_down+convert_letter(String(element));
+    var [no_variables,variables] = search_variables(input_text);
+    upside_down = convert_text(no_variables);
+    console.log(variables.length);
+    if (variables.length >= 1) {
+        upside_down = place_variables(upside_down,variables);
     }
     display_ud_text(upside_down);
+}
+
+function generate_init() {
+    new_inputed_text = get_input_text();
+    if (input_text != new_inputed_text) {
+        input_text = new_inputed_text;
+        generate();
+    }
 }
 
 // Ticking (loop to check for update every 100ms)

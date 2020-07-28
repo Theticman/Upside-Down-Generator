@@ -2,7 +2,8 @@
 const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6jdcGuNVAYt0lSrLdORgjLs6dkvBc/od6/public/basic?alt=json';
 var input_text = '';
 var table = [];
-var upside_down = '';
+var text_parts = [];
+var variables = [];
 
 // Functions
 async function getdata() {
@@ -32,48 +33,41 @@ function display_ud_text(text) {
     document.getElementById('upside_down_text').value = text;
 }
 
-function search_variables(text) {
-    var variables = [];
-    var var_1 = text.search('%s');
-    var var_2 = text.search(/%\$.s/);
-    
-    while (var_1 != -1) {
+function search_variables(text,text_parts,variables) {
+    let var_1 = text.search('%s');
+    let var_2 = text.search(/%\$.s/);
+    let left = text;
+    let right = '';
+
+    if (var_1 != -1) {
         if (variables.length >= 1) {
-            variables.push([var_1,'%$'+(variables.length+1)+'s']);
-            variables[0][1] = '%$1s';
+            variables.push('%$'+(variables.length+1)+'s');
+            variables[0] = '%$1s';
         }
         else {
-            variables.push([var_1,'%s']);
+            variables.push('%s');
         }
-        text = text.replace("%s", "§");
-        var_1 = text.search('%s')
+        left = text.slice(0,var_1);
+        right = text.slice(var_1+2,text.length);
+        search_variables(left,text_parts,variables);
+        search_variables(right,text_parts,variables); 
     }
-
-    while (var_2 != -1) {
-        variables.push([text.search(/%\$.s/),text.substring(var_2,var_2+4)]);
-        text = text.replace(text.substring(var_2,var_2+4), "§");
-        var_2 = text.search(/%\$.s/);
+    else if (var_2 =! -1) {
+        variables.push(text.substring(var_2,var_2+4));
+        left = text.slice(0,var_2);
+        right = text.slice(var_2+4,text.length);
+        search_variables(left,text_parts,variables);
+        search_variables(right,text_parts,variables); 
     }
-    console.log(variables);
-    return [text,variables]
+    else {
+        text_parts.push(text);
+    }
 }
 
-function place_variables(text,variables) {
-    console.log("LE TEXTE",text,variables[0]);
-    var new_text = '';
-    for (let i = 0; i < text.length; i++) {
-        console.log(i);
-        if (variables.length > 0 && i == variables[0][0]) {
-            new_text = variables[0][1] + new_text;
-            variables.shift();
-            new_text = text[i] + new_text;
-            i = text.length;
-            console.log("TEST");
-        } 
-        else if (text[i] != '§') {
-            new_text = text[i] + new_text;
-        }
-        console.log(new_text)
+function place_variables(text_parts,variables) {
+    let new_text = text_parts[0];
+    for (let i = 0; i < variables.length; i++) {
+        new_text = text_parts[i+1] + variables[i] + new_text;
     }
     return new_text
 }
@@ -96,15 +90,22 @@ function convert_text(text) {
     return new_text
 }
 
+function convert_text_parts(text_parts) {
+    for (let i = 0; i < text_parts.length; i++) {
+        text_parts[i] = convert_text(text_parts[i]);
+    }
+    return text_parts
+}
+
 function generate() {
     console.log("Start generate...");
-    upside_down = '';
-    var [no_variables,variables] = search_variables(input_text);
-    upside_down = convert_text(no_variables);
-    console.log("Before variables",upside_down);
-    if (variables.length >= 1) {
-        upside_down = place_variables(upside_down,variables);
-    }
+    var upside_down = '';
+    text_parts = [];
+    variables = [];
+    search_variables(input_text,text_parts,variables);
+    console.log("End recursive",text_parts,variables)
+    text_parts = convert_text_parts(text_parts);
+    upside_down = place_variables(text_parts,variables);
     display_ud_text(upside_down);
 }
 

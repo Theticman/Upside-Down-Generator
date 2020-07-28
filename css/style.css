@@ -6,5 +6,9 @@
 
 
 .title {
-    color: rgb(0, 17, 255);
+    color: blue;
+}
+
+.test {
+    color: red;
 }

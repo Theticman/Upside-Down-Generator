@@ -52,7 +52,7 @@ function search_variables(text,text_parts,variables) {
         search_variables(left,text_parts,variables);
         search_variables(right,text_parts,variables); 
     }
-    else if (var_2 =! -1) {
+    else if (var_2 != -1) {
         variables.push(text.substring(var_2,var_2+4));
         left = text.slice(0,var_2);
         right = text.slice(var_2+4,text.length);

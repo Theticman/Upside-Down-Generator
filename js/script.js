@@ -3,7 +3,6 @@ const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6j
 var input_text = '';
 var table = [];
 var upside_down = '';
-console.log("TEST");
 
 // Functions
 async function getdata() {
@@ -46,27 +45,37 @@ function search_variables(text) {
         else {
             variables.push([var_1,'%s']);
         }
-        text = text.replace("%s", "");
+        text = text.replace("%s", "§");
         var_1 = text.search('%s')
     }
 
     while (var_2 != -1) {
         variables.push([text.search(/%\$.s/),text.substring(var_2,var_2+4)]);
-        text = text.replace(text.substring(var_2,var_2+4), "");
+        text = text.replace(text.substring(var_2,var_2+4), "§");
         var_2 = text.search(/%\$.s/);
     }
-    return [text,variables.reverse()]
+    console.log(variables);
+    return [text,variables]
 }
 
 function place_variables(text,variables) {
-    console.log("Place variables");
+    console.log("LE TEXTE",text,variables[0]);
+    var new_text = '';
     for (let i = 0; i < text.length; i++) {
-        console.log(variables[0][0],i);
-        if (variables[0][0] == i) {
-            text = text.slice(0,text.length-i) + variables[0][1] + text.slice(text.lenght-i,text.lenght);
+        console.log(i);
+        if (variables.length > 0 && i == variables[0][0]) {
+            new_text = variables[0][1] + new_text;
+            variables.shift();
+            new_text = text[i] + new_text;
+            i = text.length;
+            console.log("TEST");
+        } 
+        else if (text[i] != '§') {
+            new_text = text[i] + new_text;
         }
+        console.log(new_text)
     }
-    return text
+    return new_text
 }
 
 function convert_letter(letter) {
@@ -92,7 +101,7 @@ function generate() {
     upside_down = '';
     var [no_variables,variables] = search_variables(input_text);
     upside_down = convert_text(no_variables);
-    console.log(variables.length);
+    console.log("Before variables",upside_down);
     if (variables.length >= 1) {
         upside_down = place_variables(upside_down,variables);
     }

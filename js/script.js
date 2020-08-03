@@ -1,30 +1,22 @@
 // Creating Constants & Variables
-const sheet_url = 'https://spreadsheets.google.com/feeds/cells/1KVlsHKtK03-C8Q6jdcGuNVAYt0lSrLdORgjLs6dkvBc/od6/public/basic?alt=json';
+const normal_characters = [
+    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X,","Y","Z",
+    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+    "0","1","2","3","4","5","6","7","8","9",
+    "'",".",",","!","?","<",">","[","]","(",")","{","}",":","/","%"
+];
+const updside_down_characters = [
+    "Ɐ","ᗺ","Ɔ","ᗡ","Ǝ","Ⅎ","⅁","H","I","Ր","Ʞ","Ꞁ","W","N","O","Ԁ","Ꝺ","ᴚ","S","⟘","∩","Λ","M","X","⅄","Z",
+    "ɐ","q","ɔ","p","ǝ","ɟ","ᵷ","ɥ","ᴉ","ɾ","ʞ","ꞁ","ɯ","u","o","d","b","ɹ","s","ʇ","n","ʌ","ʍ","x","ʎ","z",
+    "0","⥝","ᘔ","Ɛ","߈","ϛ","9","ㄥ","8","6",
+    ",","˙","'","¡","¿",">","<","]","[",")","(","}","{",":","/","%"
+];
+
 var input_text = '';
-var table = [];
 var text_parts = [];
 var variables = [];
 
 // Functions
-async function getdata() {
-    console.log("Calling API...");
-    const response = await fetch(sheet_url);
-    var raw_data = await response.json();
-    raw_data = raw_data.feed.entry;
-    console.log("Raw data pulled:",raw_data);
-    table = [[],[]];
-    console.log("Reformating to usable JSON...");
-    raw_data.forEach(element => {
-        if (element.title.$t[0] === 'A') {
-            table[0].push(element.content.$t);
-        } 
-        if (element.title.$t[0] === 'B') {
-            table[1].push(element.content.$t);
-        }
-    });
-    console.log("Final table",table);
-}
-
 function copy_to_clipboard(text_id) {
     var text = document.getElementById(text_id).value
     console.log("Copy to clipboard:",text);
@@ -79,12 +71,12 @@ function place_variables(text_parts,variables) {
 }
 
 function convert_letter(letter) {
-    var lettre = table[0];
+    var lettre = normal_characters;
     var indice = lettre.indexOf(letter);
     if (indice == -1) {
         return letter
     }
-    return table[1][indice];
+    return updside_down_characters[indice];
 }
 
 function convert_text(text) {

@@ -6,13 +6,13 @@
 	<link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-	<h1 class="title">Minecraft Upside Down Translation Generatorr</h1>
-	<p>Last Updated 29/07/2020</p>
-	<label for="Input" class="test">Input: </label>
-	<input type="text" name="Input" id="input_text"/>
+	<h1 class="title">Minecraft Upside Down Translation Generator</h1>
+
 	<br></br>
-	<label for="Output">Output: </label>
-	<input type="text" name="Output" id="upside_down_text"/>
+	<textarea type="text" name="Input" id="input_text" placeholder="Input text" class="input_box"></textarea>
+	<br></br>
+	<textarea type="text" name="Output" id="upside_down_text" placeholder="Output" class="output_box" readonly="true" onclick="copy_to_clipboard(this.id)"></textarea>
+	<div class="toast">This is a sample toast</div>
 	<script>
 		console.log("Loading...");
 		getdata();

@@ -25,6 +25,12 @@ async function getdata() {
     console.log("Final table",table);
 }
 
+function copy_to_clipboard(text_id) {
+    var text = document.getElementById(text_id).value
+    console.log("Copy to clipboard:",text);
+    window.navigator.clipboard.writeText(text);
+}
+
 function get_input_text() {
     return document.getElementById('input_text').value
 }

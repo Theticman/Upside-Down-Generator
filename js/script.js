@@ -33,14 +33,14 @@ function display_ud_text(text) {
 
 function search_variables(text,text_parts,variables) {
     let var_1 = text.search('%s');
-    let var_2 = text.search(/%\$.s/);
+    let var_2 = text.search(/%.\$s/);
     let left = text;
     let right = '';
 
     if (var_1 != -1) {
         if (variables.length >= 1) {
-            variables.push('%$'+(variables.length+1)+'s');
-            variables[0] = '%$1s';
+            variables.push('%'+(variables.length+1)+'$s');
+            variables[0] = '%1$s';
         }
         else {
             variables.push('%s');

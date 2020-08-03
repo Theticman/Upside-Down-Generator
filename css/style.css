@@ -18,7 +18,7 @@
     font-size: 35px;
 }
 
-.input_box {
+.text_box{
     width: 50%;
     height: 80px;
     border: 2px solid #aaa;
@@ -29,58 +29,66 @@
     font-size: 20px;
     display: block;
     margin: 0 auto;
-    transition: border-color .3s box-shadow .3s;
-    cursor: text;
+    transition: border-color .5s, box-shadow .5s;
 }
 
 .output_box {
-    width: 50%;
-    height: 80px;
-    border: 2px solid #aaa;
-    border-radius: 6px;
-    box-sizing: border-box;
-    outline: none;
-    padding: 8px;
-    font-size: 20px;
-    display: block;
-    margin: 0 auto;
-    transition: border-color .3s box-shadow .3s;
-    cursor: pointer;
+    width: 100%;
 }
 
 .input_box:hover {
     border-color: rgb(83, 162, 190);
     box-shadow:0 0 8px 0 rgb(83, 162, 190);
-    transition: border-color .2s  box-shadow .2s;
+    transition: border-color .2s,  box-shadow .2s;
+    cursor: text;
 }
 
 .input_box:focus {
     border-color: rgb(255, 200, 87);
     box-shadow:0 0 8px 0 rgb(255, 200, 87);
-    transition: border-color .2s  box-shadow .2s;
+    transition: border-color .2s,  box-shadow .2s;
 }
-
 
 .output_box:hover {
     border-color: rgb(83, 162, 190);
     box-shadow:0 0 8px 0 rgb(83, 162, 190);
-    transition: border-color .2s  box-shadow .2s;
+    transition: border-color .2s,  box-shadow .2s;
+    cursor: pointer;
 }
 
 .output_box:focus {
-    border-color: rgb(255, 200, 87);
-    box-shadow:0 0 8px 0 rgb(255, 200, 87);
-    transition: border-color .2s  box-shadow .2s;
+    border-color: lime;
+    box-shadow:0 0 8px 0 lime;
+    transition: border-color .2s,  box-shadow .2s;
 }
 
-.toast {
-    position: fixed;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .2s visibility .2s;
+.tooltip {
+    font-size: 17px;
+    text-align: center;
+    width: 50%;
+    margin-left: 25%;
 }
 
-.toast_show {
-    opacity: 1;
-    visibility: visible;
+.tooltip::before,
+.tooltip:after {
+    --scale: 0;
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(20%) scale(var(--scale));
+    transition: .2s;
+}
+
+.tooltip::after{
+    content: attr(data-tooltip);
+    color: white;
+    padding: .5rem;
+    border-radius: .3rem;
+    width: max-content;
+    max-width: 100%;
+    background: rgb(19, 46, 50);
+}
+
+.tooltip:hover::after{
+    --scale: 1;
 }

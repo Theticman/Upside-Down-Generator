@@ -21,6 +21,7 @@ function copy_to_clipboard(text_id) {
     var text = document.getElementById(text_id).value
     console.log("Copy to clipboard:",text);
     window.navigator.clipboard.writeText(text);
+    document.getElementById("tooltip").innerHTML = "Copied!";
 }
 
 function get_input_text() {
@@ -97,6 +98,7 @@ function convert_text_parts(text_parts) {
 
 function generate() {
     console.log("Start generate...");
+    document.getElementById("tooltip").innerHTML = "Click to copy"
     fetch('https://api.countapi.xyz/update/theticman/testing/?amount=1');
     var upside_down = '';
     text_parts = [];

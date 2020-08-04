@@ -30,10 +30,7 @@
     display: block;
     margin: 0 auto;
     transition: border-color .5s, box-shadow .5s;
-}
-
-.output_box {
-    width: 100%;
+    position: relative;
 }
 
 .input_box:hover {
@@ -66,29 +63,31 @@
     font-size: 17px;
     text-align: center;
     width: 50%;
-    margin-left: 25%;
-}
-
-.tooltip::before,
-.tooltip:after {
-    --scale: 0;
-
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%) translateY(20%) scale(var(--scale));
-    transition: .2s;
-}
-
-.tooltip::after{
-    content: attr(data-tooltip);
     color: white;
-    padding: .5rem;
+    padding: .8rem;
     border-radius: .3rem;
     width: max-content;
     max-width: 100%;
     background: rgb(19, 46, 50);
+    position: absolute;
+    left: 50%;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0%) scale(0);
+    transition: .2s;
 }
 
-.tooltip:hover::after{
-    --scale: 1;
+.tooltip::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: calc(50% - 10px);
+    border-bottom: 10px solid rgb(19, 46, 50);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    transform: translateY(20%);
+}
+
+.output_box:hover ~ .tooltip{
+    opacity: 1;
+    transform: translateX(-50%) translateY(30%) scale(1);
 }

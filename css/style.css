@@ -13,6 +13,10 @@ body {
     flex-direction: column;
 }
 
+textarea {
+    resize: vertical;
+}
+
 .header {
     color: rgb(238, 244, 237);
     background-color: rgb(19, 46, 50);

@@ -42,7 +42,7 @@ All strings are sourced from [English (Australia)](https://crowdin.com/editor/mi
 
 All strings are flipped and reversed by default: every character is substituted with its upside-down equivalent (see Annex), and the **entire string is reversed character-by-character** — not just the word order. Each word's letters run backwards too, so the first character of the source becomes the last character of the output.
 
-Capitalisation travels with its letter: an uppercase letter maps to its uppercase upside-down form and stays on that same letter through the flip. Because the whole string is reversed, the capital does **not** stay at the start of its word — a word-initial capital ends up at the *end* of its word, and the capital of the first word lands at the very end of the output. (In the example below, the capital `T` of "This" surfaces as the final `⟘`.)
+Capitalisation travels with its letter: an uppercase letter maps to its uppercase upside-down form and stays on that same letter through the flip. Because the whole string is reversed, a capital on the **left** side of a word moves to the **right** side of that word, and the capital of the leftmost word lands on the far right of the output. (In the example below, the capital `T` on the left of "This" surfaces as the rightmost `⟘`.)
 
 `This is an example.` → `˙ǝꞁdɯɐxǝ uɐ sᴉ sᴉɥ⟘`
 
@@ -97,7 +97,7 @@ Where a string naturally invites it, a subtle falling- or upside-down-themed jok
 
 ### 1. Narrator strings
 
-Narrator (screen-reader) strings are identifiable by their source key — not just keys containing `narrator`, but the whole family: `narrator.*`, `narration.*`, `gui.narrate.*`, and any key ending in `.narration` or `.narrate`. These strings are spoken aloud by the game's narrator — flipping the letters would produce gibberish when read out. For this reason, **only word order is reversed; letters are not flipped**.
+Narrator (screen-reader) strings are identifiable by their source key. The whole family qualifies: `narrator.*`, `narration.*`, `gui.narrate.*`, and any key ending in `.narration` or `.narrate`. These strings are spoken aloud by the game's narrator — flipping the letters would produce gibberish when read out. For this reason, **only word order is reversed; letters are not flipped**.
 
 `This is an example.` → `Example an is this.`
 
@@ -210,6 +210,8 @@ Punctuation is flipped in place and travels with its word during reversal.
 | 7 | ㄥ |
 | 8 | 8 |
 | 9 | 6 |
+
+> The `4` glyph (`߈`) is a right-to-left character. Crowdin sometimes displays it in the wrong position in the editor, but Minecraft renders it correctly in-game — so trust the in-game result, not the Crowdin preview.
 
 ### Spelling — Australian conventions
 

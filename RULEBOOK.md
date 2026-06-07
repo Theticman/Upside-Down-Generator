@@ -101,7 +101,13 @@ Narrator (screen-reader) strings are identifiable by their source key. The whole
 
 `This is an example.` → `Example an is this.`
 
-Word order is reversed, but each word stays readable — letters are not flipped and keep their normal order. Capitalisation and punctuation are then tidied up so it still reads like a sentence: the new first word is capitalised and the full stop sits at the end. If a string has more than one sentence, the sentences are reversed in order too — e.g. `This is a custom screen. Learn more.` → `More learn. Screen custom a is this.`
+Word order is reversed, but each word stays readable — letters are not flipped and keep their normal order. Capitalisation is then tidied so it still reads like a sentence: the new first word is capitalised and the word that used to lead the sentence loses its capital. Trailing punctuation is **mirrored** along with the words — it moves to the opposite end of the sentence — except the sentence-final terminator (`.`/`!`/`?`), which stays at the end. Nothing is added when the source had no end punctuation:
+
+`Hello my friend, Tom!` → `Tom, friend my hello!`
+
+If a string has more than one sentence, the sentences are reversed in order too — e.g. `This is a custom screen. Learn more.` → `More learn. Screen custom a is this.`
+
+Parameters still apply here. Reversing the word order moves any `%s` tokens, so they are reindexed by their original position exactly as in [Rule 3](#3-parameters) — the first source `%s` becomes `%1$s`, the second `%2$s`, and so on — so each still receives its original value. The token itself is never altered.
 
 ### 2. Keyboard key labels
 

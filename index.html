@@ -1,31 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Minecraft Upside Down Generator</title>
-	<script src="js/script.js"></script>
 	<link rel="stylesheet" href="css/style.css"/>
+	<script>
+		// Apply a saved theme before first paint to avoid a flash.
+		// No saved value means follow the system preference.
+		(function () {
+			var saved = localStorage.getItem("theme");
+			if (saved === "dark" || saved === "light") {
+				document.documentElement.setAttribute("data-theme", saved);
+			}
+		})();
+	</script>
+	<script src="js/script.js" defer></script>
 </head>
 <body>
-	<header>
-		<h1 class="header">Minecraft Upside Down Translation Generator</h1>
+	<header class="header">
+		<h1 class="header__title">Minecraft Upside Down Translation Generator</h1>
+		<button id="theme_toggle" class="theme-toggle" type="button" aria-label="Toggle light or dark theme">🌙</button>
 	</header>
-	<main>
-		<br></br>
-		<textarea type="text" name="Input" id="input_text" placeholder="Input text" class="text_box input_box"></textarea>
-		<br></br>
-		<textarea type="text" name="Output" id="upside_down_text" placeholder="ʇxǝʇ ʇndʇnO" class="text_box output_box" readonly="true" onclick="copy_to_clipboard(this.id)"></textarea>
-		<span id="tooltip" class="tooltip">Click to copy</span>
-		<br></br>
+
+	<main class="main">
+		<div class="mode-toggle">
+			<span class="mode-toggle__label">Standard</span>
+			<label class="switch">
+				<input type="checkbox" id="mode_switch">
+				<span class="switch__slider"></span>
+			</label>
+			<span class="mode-toggle__label">Narrator</span>
+		</div>
+
+		<label class="field">
+			<span class="field__label">Input</span>
+			<textarea id="input_text" class="text_box" placeholder="Input text"></textarea>
+		</label>
+
+		<label class="field">
+			<span class="field__label">Output — click to copy</span>
+			<textarea id="upside_down_text" class="text_box text_box--output" placeholder="ʇxǝʇ ʇndʇnO" readonly></textarea>
+		</label>
+		<span id="tooltip" class="tooltip">Copied!</span>
 	</main>
+
 	<footer class="footer">
-		<h1 class="footer-info">Created by Theticman - 2020</h1>
-		<li class="footer-contacts">
-			<a class="footer-contact" href="https://crowdin.com/profile/theticman" target="_blank">Crowdin</a>
-			-
-			<a class="footer-contact" href="https://twitter.com/Theticman30" target="_blank">Twitter</a>
-			-
-			<a class="footer-contact" href="https://www.youtube.com/channel/UCdM-8IQn2ysUZoFq8TFR4fQ?view_as=subscriber" target="_blank">Youtube</a>
-		</li>
+		<p class="footer__info">Created by Theticman - 2020</p>
+		<nav class="footer__contacts">
+			<a class="footer__contact" href="https://crowdin.com/profile/theticman" target="_blank" rel="noopener">Crowdin</a>
+			<a class="footer__contact" href="https://twitter.com/Theticman30" target="_blank" rel="noopener">Twitter</a>
+			<a class="footer__contact" href="https://www.youtube.com/channel/UCdM-8IQn2ysUZoFq8TFR4fQ?view_as=subscriber" target="_blank" rel="noopener">Youtube</a>
+		</nav>
 	</footer>
 </body>
 </html>

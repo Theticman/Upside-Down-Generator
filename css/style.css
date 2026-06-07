@@ -1,133 +1,297 @@
+/* ------------------------------------------------------------------ *
+ * Theme                                                                *
+ * One font for the whole page; colours come from semantic variables   *
+ * so light/dark only swap the values below.                           *
+ * ------------------------------------------------------------------ */
+:root {
+    --font: monospace;
+    --accent: rgb(83, 162, 190);
+    --focus: rgb(255, 200, 87);
+    --success: limegreen;
+    --radius: 6px;
+
+    /* Light palette (default) */
+    --bg: rgb(238, 244, 237);
+    --text: rgb(19, 46, 50);
+    --surface: #ffffff;
+    --surface-text: rgb(19, 46, 50);
+    --bar-bg: rgb(19, 46, 50);
+    --bar-text: rgb(238, 244, 237);
+    --border: #aaa;
+    --switch-off: #ccc;
+}
+
+/* Dark palette — applied explicitly via the toggle... */
+:root[data-theme="dark"] {
+    --bg: rgb(15, 23, 25);
+    --text: rgb(238, 244, 237);
+    --surface: rgb(28, 46, 50);
+    --surface-text: rgb(238, 244, 237);
+    --bar-bg: rgb(10, 18, 20);
+    --bar-text: rgb(238, 244, 237);
+    --border: rgb(70, 90, 95);
+    --switch-off: rgb(70, 90, 95);
+}
+
+/* ...or by following the system when no choice has been made. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --bg: rgb(15, 23, 25);
+        --text: rgb(238, 244, 237);
+        --surface: rgb(28, 46, 50);
+        --surface-text: rgb(238, 244, 237);
+        --bar-bg: rgb(10, 18, 20);
+        --bar-text: rgb(238, 244, 237);
+        --border: rgb(70, 90, 95);
+        --switch-off: rgb(70, 90, 95);
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
-    list-style: none;
-    text-decoration: none;
-    background-color: rgb(238, 244, 237);
-    font-family: monospace;
+    box-sizing: border-box;
+    font-family: var(--font);
 }
 
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
-textarea {
-    resize: vertical;
-}
-
+/* ------------------------------------------------------------------ *
+ * Header & footer                                                      *
+ * ------------------------------------------------------------------ */
 .header {
-    color: rgb(238, 244, 237);
-    background-color: rgb(19, 46, 50);
+    position: relative;
+    background-color: var(--bar-bg);
+    color: var(--bar-text);
     text-align: center;
-    padding: 20px;
-    font-size: 35px;
+    padding: 20px 64px;
 }
 
-.text_box{
-    width: 50%;
-    height: 200px;
-    border: 2px solid #aaa;
-    border-radius: 6px;
-    box-sizing: border-box;
-    outline: none;
-    padding: 8px;
+.header__title {
+    font-size: clamp(22px, 4vw, 35px);
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 2px solid var(--bar-text);
+    border-radius: 50%;
+    color: var(--bar-text);
+    width: 42px;
+    height: 42px;
     font-size: 20px;
-    display: block;
-    margin: 0 auto;
-    transition: border-color .5s, box-shadow .5s;
-}
-
-.input_box:hover {
-    border-color: rgb(83, 162, 190);
-    box-shadow:0 0 8px 0 rgb(83, 162, 190);
-    transition: border-color .2s,  box-shadow .2s;
-    cursor: text;
-}
-
-.input_box:focus {
-    border-color: rgb(255, 200, 87);
-    box-shadow:0 0 8px 0 rgb(255, 200, 87);
-    transition: border-color .2s,  box-shadow .2s;
-}
-
-.output_box:hover {
-    border-color: rgb(83, 162, 190);
-    box-shadow:0 0 8px 0 rgb(83, 162, 190);
-    transition: border-color .2s,  box-shadow .2s;
+    line-height: 1;
     cursor: pointer;
+    transition: background-color .2s, transform .2s;
 }
 
-.output_box:focus {
-    border-color: lime;
-    box-shadow:0 0 8px 0 lime;
-    transition: border-color .2s,  box-shadow .2s;
+.theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.12);
 }
 
-.tooltip {
-    font-size: 17px;
-    text-align: center;
-    width: 50%;
-    color: white;
-    padding: .8rem;
-    border-radius: .3rem;
-    width: max-content;
-    max-width: 100%;
-    background: rgb(19, 46, 50);
-    position: absolute;
-    left: 50%;
-    opacity: 1;
-    transform: translateX(-50%) translateY(0%) scale(0);
-    transition: .2s;
-}
-
-.tooltip::before {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: calc(50% - 10px);
-    border-bottom: 10px solid rgb(19, 46, 50);
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    transform: translateY(20%);
-}
-
-.output_box:hover ~ .tooltip{
-    opacity: 1;
-    transform: translateX(-50%) translateY(30%) scale(1);
+.theme-toggle:active {
+    transform: translateY(-50%) scale(0.92);
 }
 
 .footer {
-    background-color: rgb(19, 46, 50);
-    color: rgb(238, 244, 237);
+    background-color: var(--bar-bg);
+    color: var(--bar-text);
     text-align: center;
     padding: 20px;
     margin-top: auto;
 }
 
-.footer-info {
-    background-color: rgb(19, 46, 50);
+.footer__info {
     font-size: 20px;
 }
 
-.footer-contacts {
-    color: rgb(238, 244, 237);
-    background-color: rgb(19, 46, 50);
-    padding-top: 20px;
-    font-size: 18px;
+.footer__contacts {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 20px;
 }
 
-.footer-contact {
-    color: rgb(238, 244, 237);
-    background-color: rgb(19, 46, 50);
-    padding-top: 20px;
-    margin: 10px;
+.footer__contact {
+    color: var(--bar-text);
+    text-decoration: none;
     font-size: 18px;
-    transition: .2s;
+    transition: color .2s;
 }
 
-.footer-contact:hover {
-    font-size: larger;
+.footer__contact:hover {
     text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ *
+ * Main layout — single responsive column                              *
+ * ------------------------------------------------------------------ */
+.main {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field__label {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.text_box {
+    width: 100%;
+    min-height: 160px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    padding: 12px;
+    font-size: 18px;
+    background-color: var(--surface);
+    color: var(--surface-text);
+    resize: vertical;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.text_box::placeholder {
+    color: var(--surface-text);
+    opacity: 0.5;
+}
+
+.text_box:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px 0 var(--accent);
+}
+
+.text_box:focus {
+    border-color: var(--focus);
+    box-shadow: 0 0 8px 0 var(--focus);
+}
+
+.text_box--output {
+    cursor: pointer;
+}
+
+.text_box--output:focus {
+    border-color: var(--success);
+    box-shadow: 0 0 8px 0 var(--success);
+}
+
+/* ------------------------------------------------------------------ *
+ * Mode toggle switch (Standard / Narrator)                            *
+ * ------------------------------------------------------------------ */
+.mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.mode-toggle__label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch__slider {
+    position: absolute;
+    inset: 0;
+    background-color: var(--switch-off);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+.switch__slider::before {
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    top: 3px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform .3s;
+}
+
+.switch input:checked + .switch__slider {
+    background-color: var(--accent);
+}
+
+.switch input:checked + .switch__slider::before {
+    transform: translateX(24px);
+}
+
+.switch input:focus-visible + .switch__slider {
+    box-shadow: 0 0 0 3px var(--focus);
+}
+
+/* ------------------------------------------------------------------ *
+ * Copy tooltip                                                         *
+ * ------------------------------------------------------------------ */
+.tooltip {
+    align-self: center;
+    font-size: 16px;
+    color: var(--bar-text);
+    padding: .6rem 1rem;
+    border-radius: .3rem;
+    background-color: var(--bar-bg);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity .2s, transform .2s;
+}
+
+.tooltip--visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ------------------------------------------------------------------ *
+ * Small screens                                                        *
+ * ------------------------------------------------------------------ */
+@media (max-width: 480px) {
+    .header {
+        padding: 18px 56px;
+    }
+
+    .main {
+        padding: 16px 12px;
+    }
+
+    .text_box {
+        min-height: 130px;
+        font-size: 16px;
+    }
 }

@@ -1,5 +1,7 @@
 # Upside-Down-Generator
 
+![Times used](https://abacus.jasoncameron.dev/get/theticman.github.io/generator/shield?text=Times%20used)
+
 This is a generator to automatically create upside down Translation for Minecraft Crowdin.
 
 ## Links

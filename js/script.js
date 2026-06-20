@@ -173,11 +173,21 @@ function countUse() {
     fetch(COUNTER_HIT_URL).catch(() => {});
 }
 
+// Output placeholders per mode. Standard shows "Hello World" flipped;
+// Narrator keeps letters readable, so it shows the word-reversed form the
+// narrator converter would produce instead.
+const OUTPUT_PLACEHOLDER = {
+    standard: "pꞁɹoM oꞁꞁǝH",
+    narrator: "World hello",
+};
+
 function render() {
     const text = elements.input.value;
-    elements.output.value = elements.modeSwitch.checked
-        ? convertNarrator(text)
-        : convertStandard(text);
+    const narrator = elements.modeSwitch.checked;
+    elements.output.value = narrator ? convertNarrator(text) : convertStandard(text);
+    elements.output.placeholder = narrator
+        ? OUTPUT_PLACEHOLDER.narrator
+        : OUTPUT_PLACEHOLDER.standard;
 }
 
 function copyOutput() {
